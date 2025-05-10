@@ -3,7 +3,6 @@ package zti.gymappspringbackend.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import zti.gymappspringbackend.dtos.workout.CreateWorkoutDto;
-import zti.gymappspringbackend.dtos.workout.WorkoutMapper;
 import zti.gymappspringbackend.entities.Exercise;
 import zti.gymappspringbackend.entities.ExerciseType;
 import zti.gymappspringbackend.entities.Workout;

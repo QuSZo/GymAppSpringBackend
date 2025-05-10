@@ -17,7 +17,7 @@ public class ExerciseCategory {
     private String name;
 
     @OneToMany(mappedBy = "exerciseCategory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<ExerciseType> exerciseTypes = new ArrayList<>();
+    private List<ExerciseType> exerciseTypes = new ArrayList<>();
 
     public ExerciseCategory(String name) {
         this.name = name;
