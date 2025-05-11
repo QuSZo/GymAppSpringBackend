@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Service
@@ -39,8 +40,10 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, UUID userId) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "User");
+        claims.put("userId", userId);
         return createToken(claims, userDetails.getUsername());
     }
 

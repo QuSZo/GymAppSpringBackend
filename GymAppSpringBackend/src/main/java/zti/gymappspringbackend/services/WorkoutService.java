@@ -18,7 +18,8 @@ public class WorkoutService {
     private final ExerciseTypeRepository exerciseTypeRepository;
 
     public Workout createWorkout(CreateWorkoutDto request) {
-        if (workoutRepository.findByDate(request.getDate()) != null) {
+        if(workoutRepository.findByDate(request.getDate()).isPresent())
+        {
             throw new BadRequestGymAppException("Workout of " + request.getDate() + " already exists");
         }
 

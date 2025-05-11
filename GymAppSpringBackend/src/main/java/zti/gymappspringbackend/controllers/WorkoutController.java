@@ -1,9 +1,11 @@
 package zti.gymappspringbackend.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zti.gymappspringbackend.dtos.workout.CreateWorkoutDto;
+import zti.gymappspringbackend.dtos.workout.GetWorkoutDetailsDto;
 import zti.gymappspringbackend.dtos.workout.GetWorkoutDto;
 import zti.gymappspringbackend.dtos.workout.WorkoutMapper;
 import zti.gymappspringbackend.entities.Workout;
@@ -11,6 +13,7 @@ import zti.gymappspringbackend.repositories.WorkoutRepository;
 import zti.gymappspringbackend.services.WorkoutService;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,8 +33,15 @@ public class WorkoutController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Workout> getById(@PathVariable UUID id) {
-        Optional<Workout> workout = workoutRepository.findById(id);
+    public ResponseEntity<GetWorkoutDetailsDto> getById(@PathVariable UUID id) {
+        Optional<GetWorkoutDetailsDto> workout = workoutRepository.findById(id).map(WorkoutMapper::toGetDetailsDto);
+        return workout.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/by-date/{date}")
+    public ResponseEntity<GetWorkoutDetailsDto> getByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        Optional<GetWorkoutDetailsDto> workout = workoutRepository.findByDate(date).map(WorkoutMapper::toGetDetailsDto);
         return workout.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

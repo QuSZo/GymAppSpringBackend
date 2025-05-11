@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+@Getter
 @Entity
 @NoArgsConstructor
 @Table(name = "_user")
@@ -16,13 +17,13 @@ public class User {
 
     @Id @GeneratedValue
     private UUID id;
-    @Getter
     private String email;
-    @Getter
     private String password;
+    private String role;
 
-    public User(String email, String password){
+    public User(String email, String password, String role){
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 }
