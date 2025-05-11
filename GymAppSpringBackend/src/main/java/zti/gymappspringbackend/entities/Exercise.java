@@ -6,20 +6,20 @@ import lombok.NoArgsConstructor;
 
 import java.util.*;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class Exercise {
 
-    @Id @GeneratedValue @Getter
+    @Id @GeneratedValue
     private UUID id;
 
-    @Getter
     private int exerciseNumber;
 
-    @ManyToOne(optional = false) @Getter
+    @ManyToOne(optional = false)
     private ExerciseType exerciseType;
 
-    @ManyToOne(optional = false) @JoinColumn(name = "workout_id") @Getter
+    @ManyToOne(optional = false) @JoinColumn(name = "workout_id")
     private Workout workout;
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -38,10 +38,6 @@ public class Exercise {
 
     public void updateExerciseNumber(int exerciseNumber) {
         this.exerciseNumber = exerciseNumber;
-    }
-
-    public List<ExerciseSet> getExerciseSets() {
-        return Collections.unmodifiableList(exerciseSets);
     }
 
     public void setWorkout(Workout workout) {

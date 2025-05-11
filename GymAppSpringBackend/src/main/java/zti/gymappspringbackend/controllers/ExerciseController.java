@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zti.gymappspringbackend.dtos.exercise.CreateExerciseDto;
+import zti.gymappspringbackend.dtos.exercise.PatchExerciseDto;
 import zti.gymappspringbackend.entities.Exercise;
 import zti.gymappspringbackend.repositories.ExerciseRepository;
 import zti.gymappspringbackend.services.ExerciseService;
@@ -40,12 +41,15 @@ public class ExerciseController {
         return ResponseEntity.created(URI.create("/api/exercises/" + savedExercise.getId())).body(savedExercise);
     }
 
+    @PatchMapping("/{id}/exercise-number")
+    public ResponseEntity<Exercise> patch(@PathVariable UUID id, @RequestBody PatchExerciseDto dto) {
+        Exercise savedExercise = exerciseService.updateExerciseNumber(id, dto);
+        return ResponseEntity.ok(savedExercise);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        if (exerciseRepository.existsById(id)) {
-            exerciseRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        exerciseService.deleteExercise(id);
+        return ResponseEntity.noContent().build();
     }
 }

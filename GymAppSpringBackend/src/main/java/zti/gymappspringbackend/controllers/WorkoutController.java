@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import zti.gymappspringbackend.dtos.workout.CreateWorkoutDto;
-import zti.gymappspringbackend.dtos.workout.GetWorkoutDetailsDto;
-import zti.gymappspringbackend.dtos.workout.GetWorkoutDto;
-import zti.gymappspringbackend.dtos.workout.WorkoutMapper;
+import zti.gymappspringbackend.dtos.workout.*;
 import zti.gymappspringbackend.entities.Workout;
 import zti.gymappspringbackend.repositories.WorkoutRepository;
 import zti.gymappspringbackend.services.WorkoutService;
@@ -49,6 +46,12 @@ public class WorkoutController {
     @PostMapping
     public ResponseEntity<Workout> create(@RequestBody CreateWorkoutDto request) {
         Workout savedWorkout = workoutService.createWorkout(request);
+        return ResponseEntity.created(URI.create("/api/workouts/" + savedWorkout.getId())).body(savedWorkout);
+    }
+
+    @PostMapping("/copy")
+    public ResponseEntity<Workout> copy(@RequestBody CopyWorkoutDto request){
+        Workout savedWorkout = workoutService.copyWorkout(request);
         return ResponseEntity.created(URI.create("/api/workouts/" + savedWorkout.getId())).body(savedWorkout);
     }
 

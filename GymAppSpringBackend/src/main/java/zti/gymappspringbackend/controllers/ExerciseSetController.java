@@ -3,11 +3,15 @@ package zti.gymappspringbackend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import zti.gymappspringbackend.dtos.exerciseSet.CreateOrUpdateExerciseSetDto;
 import zti.gymappspringbackend.entities.ExerciseSet;
+import zti.gymappspringbackend.exceptions.BadRequestGymAppException;
 import zti.gymappspringbackend.repositories.ExerciseSetRepository;
+import zti.gymappspringbackend.services.ExerciseSetService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,6 +21,7 @@ import java.util.UUID;
 public class ExerciseSetController {
 
     private final ExerciseSetRepository exerciseSetRepository;
+    private final ExerciseSetService exerciseSetService;
 
     @GetMapping
     public ResponseEntity<List<ExerciseSet>> getAll() {
@@ -32,9 +37,25 @@ public class ExerciseSetController {
     }
 
     @PostMapping
-    public ResponseEntity<ExerciseSet> create(@RequestBody ExerciseSet exerciseSet) {
-        ExerciseSet savedExerciseSet = exerciseSetRepository.save(exerciseSet);
+    public ResponseEntity<ExerciseSet> create(@RequestBody CreateOrUpdateExerciseSetDto dto) {
+        ExerciseSet savedExerciseSet = exerciseSetService.saveExerciseSet(dto);
         return ResponseEntity.created(URI.create("/api/exercise-sets/" + savedExerciseSet.getId())).body(savedExerciseSet);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ExerciseSet> update(@PathVariable UUID id, @RequestBody CreateOrUpdateExerciseSetDto dto) {
+        return exerciseSetRepository.findById(id)
+                .map(existing -> {
+//                    UUID currentUserId = currentUserService.getUserId();
+//                    if (!exerciseSet.getExercise().getWorkout().getUser().getId().equals(currentUserId)) {
+//                        throw new ExerciseSetNotFoundException(command.getId());
+//                    }
+
+                    existing.update(dto.getQuantity(), dto.getReps());
+                    ExerciseSet exerciseSet = exerciseSetRepository.save(existing);
+                    return ResponseEntity.ok(exerciseSet);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

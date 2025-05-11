@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.*;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class Workout {
 
-    @Id @GeneratedValue @Getter
+    @Id @GeneratedValue
     private UUID id;
 
-    @Getter
     private LocalDate date;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -27,9 +27,5 @@ public class Workout {
     public void addExercise(Exercise exercise) {
         exercises.add(exercise);
         exercise.setWorkout(this);
-    }
-
-    public List<Exercise> getExercises() {
-        return Collections.unmodifiableList(exercises);
     }
 }

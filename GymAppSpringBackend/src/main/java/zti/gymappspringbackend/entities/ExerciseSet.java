@@ -21,8 +21,7 @@ public class ExerciseSet {
     @ManyToOne(optional = false) @JoinColumn(name = "exercise_id")
     private Exercise exercise;
 
-    public ExerciseSet(UUID id, int setNumber, int quantity, int reps, Exercise exercise) {
-        this.id = id;
+    public ExerciseSet(int setNumber, int quantity, int reps, Exercise exercise) {
         this.setNumber = setNumber;
         this.quantity = quantity;
         this.reps = reps;

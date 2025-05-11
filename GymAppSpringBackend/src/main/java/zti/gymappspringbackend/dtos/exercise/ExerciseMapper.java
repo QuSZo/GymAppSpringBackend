@@ -3,6 +3,9 @@ package zti.gymappspringbackend.dtos.exercise;
 import zti.gymappspringbackend.dtos.exerciseSet.ExerciseSetMapper;
 import zti.gymappspringbackend.dtos.exerciseType.ExerciseTypeMapper;
 import zti.gymappspringbackend.entities.Exercise;
+import zti.gymappspringbackend.entities.ExerciseSet;
+
+import java.util.Comparator;
 
 public class ExerciseMapper {
 
@@ -11,7 +14,10 @@ public class ExerciseMapper {
         dto.setId(exercise.getId());
         dto.setExerciseNumber(exercise.getExerciseNumber());
         dto.setExerciseTypeName(exercise.getExerciseType().getName());
-        dto.setExerciseSets(exercise.getExerciseSets().stream().map(ExerciseSetMapper::toGetDetailsDto).toList());
+        dto.setExerciseSets(exercise.getExerciseSets().stream()
+                .sorted(Comparator.comparing(ExerciseSet::getSetNumber))
+                .map(ExerciseSetMapper::toGetDetailsDto)
+                .toList());
         return dto;
     }
 }
