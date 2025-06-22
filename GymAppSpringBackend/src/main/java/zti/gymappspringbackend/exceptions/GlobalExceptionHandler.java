@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Globalny handler wyjątków obsługujący błędy aplikacji.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

@@ -3,6 +3,9 @@ package zti.gymappspringbackend.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Niestandardowy wyjątek rzucany w przypadku błędnych żądań.
+ */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadRequestGymAppException extends RuntimeException {
     public BadRequestGymAppException(String message) {

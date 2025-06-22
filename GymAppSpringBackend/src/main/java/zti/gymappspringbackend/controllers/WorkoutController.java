@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Kontroler REST odpowiadający za obsługę żądań dotyczących treningów.
+ */
 @RestController
 @RequestMapping("/api/workouts")
 @RequiredArgsConstructor

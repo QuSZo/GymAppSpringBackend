@@ -7,6 +7,9 @@ import zti.gymappspringbackend.dtos.exerciseType.GetExerciseTypeDto;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * DTO służące do pobierania ćwiczeń.
+ */
 @Data
 public class GetExerciseDetailsDto {
     private UUID id;

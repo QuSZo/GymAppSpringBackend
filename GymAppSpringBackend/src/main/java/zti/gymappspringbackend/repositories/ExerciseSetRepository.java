@@ -5,5 +5,8 @@ import zti.gymappspringbackend.entities.ExerciseSet;
 
 import java.util.UUID;
 
+/**
+ * Repozytorium JPA dla encji ExerciseSet.
+ */
 public interface ExerciseSetRepository extends JpaRepository<ExerciseSet, UUID> {
 }

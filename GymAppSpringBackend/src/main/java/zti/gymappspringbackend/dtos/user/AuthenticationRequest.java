@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO reprezentujące dane logowania użytkownika.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

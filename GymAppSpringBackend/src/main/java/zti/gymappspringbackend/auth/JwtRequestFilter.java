@@ -20,7 +20,12 @@ import zti.gymappspringbackend.services.CustomUserDetailsService;
 import java.io.IOException;
 import java.util.UUID;
 
+
 //https://www.geeksforgeeks.org/securing-rest-apis-with-spring-security/
+/**
+ * Komponent Springa wykorzystywany w kontekście bezpieczeństwa aplikacji.
+ * Filtr żądań HTTP, który przechwytuje i weryfikuje token JWT w nagłówku "Authorization".
+ */
 @Component
 @AllArgsConstructor
 @RequiredArgsConstructor

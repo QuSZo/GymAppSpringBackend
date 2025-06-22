@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.*;
 
+/**
+ * Encja reprezentująca ćwiczenie w systemie.
+ */
 @Getter
 @Entity
 @NoArgsConstructor

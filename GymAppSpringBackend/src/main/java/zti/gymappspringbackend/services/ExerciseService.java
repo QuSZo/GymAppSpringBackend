@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+/**
+ * Serwis odpowiedzialny za logikę biznesową dotyczącą ćwiczeń.
+ */
 @Service
 @RequiredArgsConstructor
 public class ExerciseService {

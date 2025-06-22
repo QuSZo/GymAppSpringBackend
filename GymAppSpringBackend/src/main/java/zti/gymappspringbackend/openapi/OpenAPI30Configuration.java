@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 //https://www.baeldung.com/openapi-jwt-authentication
 
+/**
+ * Konfiguracja OpenAPI 3.0 dla dokumentacji API.
+ */
 @Configuration
 public class OpenAPI30Configuration {
     @Bean

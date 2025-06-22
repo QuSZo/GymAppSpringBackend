@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.*;
 
+/**
+ * Encja reprezentująca ketegorię ćwiczenia w systemie.
+ */
 @Entity
 @NoArgsConstructor
 public class ExerciseCategory {

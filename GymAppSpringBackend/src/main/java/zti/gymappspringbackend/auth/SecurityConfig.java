@@ -15,6 +15,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import zti.gymappspringbackend.services.CustomUserDetailsService;
 
+/**
+ * Konfiguracja zabezpieczeń aplikacji przy użyciu Spring Security.
+ * Ustawia uwierzytelnianie oparte na JWT
+ * oraz definiuje dostęp do publicznych i chronionych endpointów.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

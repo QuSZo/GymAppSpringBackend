@@ -7,6 +7,9 @@ import zti.gymappspringbackend.entities.ExerciseSet;
 
 import java.util.Comparator;
 
+/**
+ * Klasa pomocnicza (mapper) służąca do konwersji obiektów Exercise na obiekty DTO
+ */
 public class ExerciseMapper {
 
     public static GetExerciseDetailsDto toGetDetailsDto(Exercise exercise){

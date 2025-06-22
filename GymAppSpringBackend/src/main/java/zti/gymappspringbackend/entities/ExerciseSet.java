@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+/**
+ * Encja reprezentująca serię ćwiczeniową w systemie.
+ */
 @Entity
 @NoArgsConstructor
 @Getter

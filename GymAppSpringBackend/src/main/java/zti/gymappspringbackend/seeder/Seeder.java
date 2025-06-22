@@ -12,6 +12,9 @@ import zti.gymappspringbackend.repositories.ExerciseTypeRepository;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Komponent odpowiedzialny za inicjalizację bazy danych przykładowymi kategoriami i typami ćwiczeń.
+ */
 @Component
 @RequiredArgsConstructor
 public class Seeder implements ApplicationRunner {

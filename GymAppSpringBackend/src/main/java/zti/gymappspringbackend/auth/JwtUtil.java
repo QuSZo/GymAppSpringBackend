@@ -14,6 +14,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
+/**
+ * Serwis odpowiedzialny za operacje związane z obsługą tokenów JWT:
+ * generowanie, walidacja oraz ekstrakcja informacji takich jak nazwa użytkownika czy identyfikator użytkownika.
+ */
 @Service
 public class JwtUtil {
 

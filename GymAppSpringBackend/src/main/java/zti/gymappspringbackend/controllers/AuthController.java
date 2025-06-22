@@ -15,6 +15,9 @@ import zti.gymappspringbackend.exceptions.BadRequestGymAppException;
 import zti.gymappspringbackend.repositories.UserRepository;
 import zti.gymappspringbackend.services.CustomUserDetailsService;
 
+/**
+ * Kontroler REST odpowiedzialny za operacje uwierzytelniania użytkowników
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

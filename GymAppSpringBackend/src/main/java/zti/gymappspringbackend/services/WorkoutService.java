@@ -15,6 +15,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Serwis odpowiedzialny za logikę biznesową dotyczącą treningów.
+ */
 @Service
 @RequiredArgsConstructor
 public class WorkoutService {

@@ -19,6 +19,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Kontroler REST odpowiadający za obsługę żądań dotyczących serii ćwiczeniowych.
+ */
 @RestController
 @RequestMapping("/api/exercise-sets")
 @RequiredArgsConstructor

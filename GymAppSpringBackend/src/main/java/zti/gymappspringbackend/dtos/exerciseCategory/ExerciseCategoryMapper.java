@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import zti.gymappspringbackend.dtos.exerciseType.ExerciseTypeMapper;
 import zti.gymappspringbackend.entities.ExerciseCategory;
 
+/**
+ * Klasa pomocnicza (mapper) służąca do konwersji obiektów ExerciseCategory na obiekty DTO
+ */
 @Component
 public class ExerciseCategoryMapper {
 

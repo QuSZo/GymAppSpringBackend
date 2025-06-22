@@ -7,6 +7,9 @@ import zti.gymappspringbackend.entities.Workout;
 
 import java.util.Comparator;
 
+/**
+ * Klasa pomocnicza (mapper) służąca do konwersji obiektów Workout na obiekty DTO
+ */
 @Component
 public class WorkoutMapper {
 

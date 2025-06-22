@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Kontroler REST odpowiadający za obsługę żądań dotyczących typów ćwiczeń.
+ */
 @RestController
 @RequestMapping("/api/exercise-types")
 @RequiredArgsConstructor

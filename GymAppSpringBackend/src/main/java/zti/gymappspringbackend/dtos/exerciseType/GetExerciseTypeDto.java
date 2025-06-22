@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.UUID;
 
+/**
+ * DTO służące do pobierania typów ćwiczeń.
+ */
 @Data
 public class GetExerciseTypeDto {
     private UUID id;

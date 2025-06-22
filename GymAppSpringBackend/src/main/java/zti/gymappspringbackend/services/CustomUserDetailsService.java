@@ -10,6 +10,9 @@ import zti.gymappspringbackend.repositories.UserRepository;
 
 import java.util.ArrayList;
 
+/**
+ * Serwis implementujący interfejs UserDetailsService Spring Security
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

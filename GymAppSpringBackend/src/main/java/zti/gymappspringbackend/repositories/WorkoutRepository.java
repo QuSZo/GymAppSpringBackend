@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Repozytorium JPA dla encji Workout.
+ */
 public interface WorkoutRepository extends JpaRepository<Workout, UUID> {
     List<Workout> findAllByUser(User user);
     Optional<Workout> findByIdAndUser(UUID id, User user);

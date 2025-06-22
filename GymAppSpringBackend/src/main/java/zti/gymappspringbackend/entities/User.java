@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+/**
+ * Encja reprezentująca użytkownika w systemie.
+ */
 @Getter
 @Entity
 @NoArgsConstructor

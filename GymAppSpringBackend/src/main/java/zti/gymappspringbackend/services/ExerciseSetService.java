@@ -16,6 +16,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Serwis odpowiedzialny za logikę biznesową dotyczącą serii ćwiczeniowych.
+ */
 @Service
 @RequiredArgsConstructor
 public class ExerciseSetService {
