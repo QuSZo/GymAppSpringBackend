@@ -2,11 +2,15 @@ package zti.gymappspringbackend.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import zti.gymappspringbackend.dtos.exerciseSet.CreateOrUpdateExerciseSetDto;
+import zti.gymappspringbackend.entities.Exercise;
 import zti.gymappspringbackend.entities.ExerciseSet;
+import zti.gymappspringbackend.entities.User;
 import zti.gymappspringbackend.exceptions.BadRequestGymAppException;
 import zti.gymappspringbackend.repositories.ExerciseSetRepository;
+import zti.gymappspringbackend.repositories.UserRepository;
 import zti.gymappspringbackend.services.ExerciseSetService;
 
 import java.net.URI;
@@ -22,19 +26,20 @@ public class ExerciseSetController {
 
     private final ExerciseSetRepository exerciseSetRepository;
     private final ExerciseSetService exerciseSetService;
+    private final UserRepository userRepository;
 
-    @GetMapping
-    public ResponseEntity<List<ExerciseSet>> getAll() {
-        List<ExerciseSet> exerciseSets = exerciseSetRepository.findAll();
-        return ResponseEntity.ok(exerciseSets);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ExerciseSet> getById(@PathVariable UUID id) {
-        Optional<ExerciseSet> exerciseSet = exerciseSetRepository.findById(id);
-        return exerciseSet.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<ExerciseSet>> getAll() {
+//        List<ExerciseSet> exerciseSets = exerciseSetRepository.findAll();
+//        return ResponseEntity.ok(exerciseSets);
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ExerciseSet> getById(@PathVariable UUID id) {
+//        Optional<ExerciseSet> exerciseSet = exerciseSetRepository.findById(id);
+//        return exerciseSet.map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.notFound().build());
+//    }
 
     @PostMapping
     public ResponseEntity<ExerciseSet> create(@RequestBody CreateOrUpdateExerciseSetDto dto) {
@@ -46,10 +51,13 @@ public class ExerciseSetController {
     public ResponseEntity<ExerciseSet> update(@PathVariable UUID id, @RequestBody CreateOrUpdateExerciseSetDto dto) {
         return exerciseSetRepository.findById(id)
                 .map(existing -> {
-//                    UUID currentUserId = currentUserService.getUserId();
-//                    if (!exerciseSet.getExercise().getWorkout().getUser().getId().equals(currentUserId)) {
-//                        throw new ExerciseSetNotFoundException(command.getId());
-//                    }
+                    UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getDetails();
+                    User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new BadRequestGymAppException());
+
+                    if (!existing.getExercise().getWorkout().getUser().equals(user)) {
+                        throw new BadRequestGymAppException();
+                    }
 
                     existing.update(dto.getQuantity(), dto.getReps());
                     ExerciseSet exerciseSet = exerciseSetRepository.save(existing);
@@ -60,10 +68,18 @@ public class ExerciseSetController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        if (exerciseSetRepository.existsById(id)) {
-            exerciseSetRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+        ExerciseSet exerciseSet = exerciseSetRepository.findById(id)
+                .orElseThrow(() -> new BadRequestGymAppException("Exercise not found"));
+
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestGymAppException());
+
+        if (!exerciseSet.getExercise().getWorkout().getUser().equals(user)) {
+            throw new BadRequestGymAppException();
         }
-        return ResponseEntity.notFound().build();
+
+        exerciseSetRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

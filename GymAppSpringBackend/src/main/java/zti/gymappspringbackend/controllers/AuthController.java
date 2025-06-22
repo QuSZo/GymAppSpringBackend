@@ -11,6 +11,7 @@ import zti.gymappspringbackend.dtos.user.AuthenticationRequest;
 import zti.gymappspringbackend.dtos.user.JwtDto;
 import zti.gymappspringbackend.dtos.user.RegisterDto;
 import zti.gymappspringbackend.entities.User;
+import zti.gymappspringbackend.exceptions.BadRequestGymAppException;
 import zti.gymappspringbackend.repositories.UserRepository;
 import zti.gymappspringbackend.services.CustomUserDetailsService;
 
@@ -35,20 +36,26 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@RequestBody RegisterDto request) {
-        // Encode the user's password
+        User userExisted = userRepository.findByEmail(request.getEmail());
+        if(userExisted != null)
+            throw new BadRequestGymAppException("The email address already exists");
+
         String hashPassword = passwordEncoder.encode(request.getPassword());
         User user = new User(request.getEmail(), hashPassword, "user");
-
-        // Save the user to the database
         userRepository.save(user);
         return "User registered successfully";
     }
 
     @PostMapping("/login")
     public JwtDto loginUser(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
-        );
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
+            );
+        }
+        catch(Exception exception){
+            throw new BadRequestGymAppException("Invalid username or password");
+        }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         final String jwt = jwtUtil.generateToken(userDetails, userRepository.findByEmail(authenticationRequest.getEmail()).getId());

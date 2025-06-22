@@ -10,6 +10,7 @@ import zti.gymappspringbackend.repositories.ExerciseCategoryRepository;
 import zti.gymappspringbackend.repositories.ExerciseTypeRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -37,27 +38,31 @@ public class Seeder implements ApplicationRunner {
             );
 
             exerciseCategoryRepository.saveAll(exerciseCategories);
+            exerciseCategoryRepository.flush();
         }
     }
 
     private void seedExerciseTypes(){
+        ExerciseCategory klatka = exerciseCategoryRepository.findByName("Klatka piersiowa");
+        ExerciseCategory triceps = exerciseCategoryRepository.findByName("Triceps");
+
         if (exerciseTypeRepository.count() == 0) {
             List<ExerciseType> exerciseTypes = List.of(
-                new ExerciseType("Wyciskanie sztangi na ławce poziomej", exerciseCategoryRepository.findByName("Klatka piersiowa")),
-                new ExerciseType("Wyciskanie sztangi na ławce skośnej", exerciseCategoryRepository.findByName("Klatka piersiowa")),
-                new ExerciseType("Wyciskanie hantli na ławce skośnej", exerciseCategoryRepository.findByName("Klatka piersiowa")),
-                new ExerciseType("Wyciskanie hantli na ławce poziomej", exerciseCategoryRepository.findByName("Klatka piersiowa")),
-                new ExerciseType("Rozpiętki na ławce poziomej", exerciseCategoryRepository.findByName("Klatka piersiowa")),
-                new ExerciseType("Pompki na poręczach (dipy)", exerciseCategoryRepository.findByName("Klatka piersiowa")),
-                new ExerciseType("Wyciskanie na maszynie hammer", exerciseCategoryRepository.findByName("Klatka piersiowa")),
-                new ExerciseType("Rozpiętki na maszynie", exerciseCategoryRepository.findByName("Klatka piersiowa")),
-                new ExerciseType("Prostowanie ramion z linkami wyciągu górnego", exerciseCategoryRepository.findByName("Triceps")),
-                new ExerciseType("Wyciskanie francuskie", exerciseCategoryRepository.findByName("Triceps")),
-                new ExerciseType("Wyciskanie sztangi wąskim chwytem", exerciseCategoryRepository.findByName("Triceps")),
-                new ExerciseType("Wyciskanie hantelki zza głowy", exerciseCategoryRepository.findByName("Triceps")),
-                new ExerciseType("Prostowanie ramienia w opadzie tułowia", exerciseCategoryRepository.findByName("Triceps")),
-                new ExerciseType("Pompki na poręczach (dipy)", exerciseCategoryRepository.findByName("Triceps")),
-                new ExerciseType("Prostowanie ramienia leżąc", exerciseCategoryRepository.findByName("Triceps")),
+                new ExerciseType("Wyciskanie sztangi na ławce poziomej", klatka),
+                new ExerciseType("Wyciskanie sztangi na ławce skośnej", klatka),
+                new ExerciseType("Wyciskanie hantli na ławce skośnej", klatka),
+                new ExerciseType("Wyciskanie hantli na ławce poziomej", klatka),
+                new ExerciseType("Rozpiętki na ławce poziomej", klatka),
+                new ExerciseType("Pompki na poręczach (dipy)", klatka),
+                new ExerciseType("Wyciskanie na maszynie hammer", klatka),
+                new ExerciseType("Rozpiętki na maszynie", klatka),
+                new ExerciseType("Prostowanie ramion z linkami wyciągu górnego", triceps),
+                new ExerciseType("Wyciskanie francuskie", triceps),
+                new ExerciseType("Wyciskanie sztangi wąskim chwytem", triceps),
+                new ExerciseType("Wyciskanie hantelki zza głowy", triceps),
+                new ExerciseType("Prostowanie ramienia w opadzie tułowia", triceps),
+                new ExerciseType("Pompki na poręczach (dipy)", triceps),
+                new ExerciseType("Prostowanie ramienia leżąc", triceps),
                 new ExerciseType("Prostowanie ramion z linkami wyciągu górnego", exerciseCategoryRepository.findByName("Triceps")),
                 new ExerciseType("Unoszenie hantli bokiem", exerciseCategoryRepository.findByName("Barki")),
                 new ExerciseType("Unoszenie hantli w przód", exerciseCategoryRepository.findByName("Barki")),

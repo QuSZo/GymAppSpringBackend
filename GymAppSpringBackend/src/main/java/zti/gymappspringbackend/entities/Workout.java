@@ -17,11 +17,15 @@ public class Workout {
 
     private LocalDate date;
 
+    @ManyToOne(optional = false) @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Exercise> exercises = new ArrayList<>();
 
-    public Workout(LocalDate date) {
+    public Workout(LocalDate date, User user) {
         this.date = date;
+        this.user = user;
     }
 
     public void addExercise(Exercise exercise) {

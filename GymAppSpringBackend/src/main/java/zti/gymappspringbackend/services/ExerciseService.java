@@ -2,16 +2,19 @@ package zti.gymappspringbackend.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import zti.gymappspringbackend.dtos.exercise.ChangeDirectionEnum;
 import zti.gymappspringbackend.dtos.exercise.CreateExerciseDto;
 import zti.gymappspringbackend.dtos.exercise.PatchExerciseDto;
 import zti.gymappspringbackend.entities.Exercise;
 import zti.gymappspringbackend.entities.ExerciseType;
+import zti.gymappspringbackend.entities.User;
 import zti.gymappspringbackend.entities.Workout;
 import zti.gymappspringbackend.exceptions.BadRequestGymAppException;
 import zti.gymappspringbackend.repositories.ExerciseRepository;
 import zti.gymappspringbackend.repositories.ExerciseTypeRepository;
+import zti.gymappspringbackend.repositories.UserRepository;
 import zti.gymappspringbackend.repositories.WorkoutRepository;
 
 import java.util.Comparator;
@@ -26,19 +29,24 @@ public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final WorkoutRepository workoutRepository;
     private final ExerciseTypeRepository exerciseTypeRepository;
+    private final UserRepository userRepository;
 
     public Exercise saveExercise(CreateExerciseDto exerciseDto) {
         Workout workout = workoutRepository.findById(exerciseDto.getWorkoutId())
                 .orElseThrow(() -> new BadRequestGymAppException("Workout not found"));
 
-//        if (!workout.getUser().getId().equals(currentUserService.getUserId())) {
-//            throw new WorkoutNotFoundException(command.getWorkoutId());
-//        }
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestGymAppException());
+
+        if (!workout.getUser().equals(user)) {
+            throw new BadRequestGymAppException();
+        }
 
         ExerciseType exerciseType = exerciseTypeRepository.findById(exerciseDto.getExerciseTypeId())
                 .orElseThrow(() -> new BadRequestGymAppException("Exercise type not found"));
 
-        List<Exercise> exercises = workoutRepository.findById(exerciseDto.getWorkoutId()).get().getExercises();
+        List<Exercise> exercises = workoutRepository.findById(exerciseDto.getWorkoutId()).get().getExercises().stream().sorted(Comparator.comparingInt(Exercise::getExerciseNumber)).toList();
         int nextExerciseNumber = exercises.isEmpty() ? 1 :
                 exercises.get(exercises.size() - 1).getExerciseNumber() + 1;
 
@@ -52,10 +60,13 @@ public class ExerciseService {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new BadRequestGymAppException("Exercise not found"));
 
-//        UUID currentUserId = currentUserService.getUserId();
-//        if (!exercise.getWorkout().getUser().getId().equals(currentUserId)) {
-//            throw new ExerciseNotFoundException(command.getId());
-//        }
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestGymAppException());
+
+        if (!exercise.getWorkout().getUser().equals(user)) {
+            throw new BadRequestGymAppException();
+        }
 
         List<Exercise> exercises = workoutRepository.findById(exercise.getWorkout().getId())
                 .get().getExercises()
@@ -92,10 +103,13 @@ public class ExerciseService {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new BadRequestGymAppException("Exercise not found"));
 
-//        UUID currentUserId = currentUserService.getUserId();
-//        if (!exercise.getWorkout().getUser().getId().equals(currentUserId)) {
-//            throw new ExerciseNotFoundException(exerciseId);
-//        }
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestGymAppException());
+
+        if (!exercise.getWorkout().getUser().equals(user)) {
+            throw new BadRequestGymAppException();
+        }
 
         List<Exercise> exercises = workoutRepository.findById(exercise.getWorkout().getId()).get().getExercises();
 

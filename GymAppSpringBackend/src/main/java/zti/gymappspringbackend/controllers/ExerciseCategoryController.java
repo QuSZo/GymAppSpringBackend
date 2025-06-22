@@ -33,18 +33,18 @@ public class ExerciseCategoryController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<ExerciseCategory> create(@RequestBody ExerciseCategory exerciseCategory) {
-        ExerciseCategory savedExerciseCategory = exerciseCategoryRepository.save(exerciseCategory);
-        return ResponseEntity.created(URI.create("/api/exercise-categories/" + savedExerciseCategory.getId())).body(savedExerciseCategory);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        if (exerciseCategoryRepository.existsById(id)) {
-            exerciseCategoryRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
+//    @PostMapping
+//    public ResponseEntity<ExerciseCategory> create(@RequestBody ExerciseCategory exerciseCategory) {
+//        ExerciseCategory savedExerciseCategory = exerciseCategoryRepository.save(exerciseCategory);
+//        return ResponseEntity.created(URI.create("/api/exercise-categories/" + savedExerciseCategory.getId())).body(savedExerciseCategory);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+//        if (exerciseCategoryRepository.existsById(id)) {
+//            exerciseCategoryRepository.deleteById(id);
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
 }

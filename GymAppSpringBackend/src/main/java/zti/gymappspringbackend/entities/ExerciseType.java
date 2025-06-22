@@ -16,7 +16,7 @@ public class ExerciseType {
 
     private String name;
 
-    @ManyToOne(optional = false) @JoinColumn(name = "exerciseCategoryId", insertable = false, updatable = false)
+    @ManyToOne(optional = false) @JoinColumn(name = "exerciseCategoryId")
     private ExerciseCategory exerciseCategory;
 
     public ExerciseType(String name, ExerciseCategory exerciseCategory) {

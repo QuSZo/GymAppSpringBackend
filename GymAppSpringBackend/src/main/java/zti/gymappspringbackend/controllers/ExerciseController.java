@@ -2,10 +2,13 @@ package zti.gymappspringbackend.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import zti.gymappspringbackend.dtos.exercise.CreateExerciseDto;
 import zti.gymappspringbackend.dtos.exercise.PatchExerciseDto;
 import zti.gymappspringbackend.entities.Exercise;
+import zti.gymappspringbackend.entities.User;
+import zti.gymappspringbackend.exceptions.BadRequestGymAppException;
 import zti.gymappspringbackend.repositories.ExerciseRepository;
 import zti.gymappspringbackend.services.ExerciseService;
 
@@ -22,18 +25,18 @@ public class ExerciseController {
     private final ExerciseRepository exerciseRepository;
     private final ExerciseService exerciseService;
 
-    @GetMapping
-    public ResponseEntity<List<Exercise>> getAll() {
-        List<Exercise> exercises = exerciseRepository.findAll();
-        return ResponseEntity.ok(exercises);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Exercise> getById(@PathVariable UUID id) {
-        Optional<Exercise> exercise = exerciseRepository.findById(id);
-        return exercise.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Exercise>> getAll() {
+//        List<Exercise> exercises = exerciseRepository.findAll();
+//        return ResponseEntity.ok(exercises);
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Exercise> getById(@PathVariable UUID id) {
+//        Optional<Exercise> exercise = exerciseRepository.findById(id);
+//        return exercise.map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.notFound().build());
+//    }
 
     @PostMapping
     public ResponseEntity<Exercise> create(@RequestBody CreateExerciseDto exercise) {

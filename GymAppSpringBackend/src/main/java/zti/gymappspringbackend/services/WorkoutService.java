@@ -1,19 +1,19 @@
 package zti.gymappspringbackend.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import zti.gymappspringbackend.dtos.workout.CopyWorkoutDto;
 import zti.gymappspringbackend.dtos.workout.CreateWorkoutDto;
-import zti.gymappspringbackend.entities.Exercise;
-import zti.gymappspringbackend.entities.ExerciseSet;
-import zti.gymappspringbackend.entities.ExerciseType;
-import zti.gymappspringbackend.entities.Workout;
+import zti.gymappspringbackend.entities.*;
 import zti.gymappspringbackend.exceptions.BadRequestGymAppException;
 import zti.gymappspringbackend.repositories.ExerciseTypeRepository;
+import zti.gymappspringbackend.repositories.UserRepository;
 import zti.gymappspringbackend.repositories.WorkoutRepository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,14 +21,19 @@ public class WorkoutService {
 
     private final WorkoutRepository workoutRepository;
     private final ExerciseTypeRepository exerciseTypeRepository;
+    private final UserRepository userRepository;
 
     public Workout createWorkout(CreateWorkoutDto request) {
-        if(workoutRepository.findByDate(request.getDate()).isPresent())
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestGymAppException());
+
+        if(workoutRepository.findByDateAndUser(request.getDate(), user).isPresent())
         {
             throw new BadRequestGymAppException("Workout of " + request.getDate() + " already exists");
         }
 
-        Workout workout = new Workout(request.getDate());
+        Workout workout = new Workout(request.getDate(), user);
 
         ExerciseType exerciseType = exerciseTypeRepository.findById(request.getExerciseTypeId())
                 .orElseThrow(() -> new BadRequestGymAppException("Exercise type not found"));
@@ -40,24 +45,17 @@ public class WorkoutService {
     }
 
     public Workout copyWorkout(CopyWorkoutDto dto) {
-//        UUID userId = currentUserService.getUserId();
-//
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new UserNotFoundException(userId));
-//
-//        workoutRepository.findByDateAndUserId(destinationDate, userId)
-//                .ifPresent(w -> { throw new WorkoutWithTheSameDateException(sourceDate); });
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestGymAppException());
 
-//        Workout copyWorkoutFrom = workoutRepository.findByDateAndUserId(sourceDate, userId)
-//                .orElseThrow(() -> new WorkoutByDateNotFoundException(sourceDate));
+        workoutRepository.findByDateAndUser(dto.getDestinationDate(), user)
+            .ifPresent(w -> { throw new BadRequestGymAppException("Workout of " + dto.getDestinationDate() + " already exists"); });
 
-        workoutRepository.findByDate(dto.getDestinationDate())
-                .ifPresent(w -> { throw new BadRequestGymAppException("Workout of " + dto.getDestinationDate() + " already exists"); });
-
-        Workout copyWorkoutFrom = workoutRepository.findByDate(dto.getSourceDate())
+        Workout copyWorkoutFrom = workoutRepository.findByDateAndUser(dto.getSourceDate(), user)
                 .orElseThrow(() -> new BadRequestGymAppException("Source workout not found"));
 
-        Workout newWorkout = new Workout(dto.getDestinationDate());
+        Workout newWorkout = new Workout(dto.getDestinationDate(), user);
 
         List<Exercise> exercisesToCopy = copyWorkoutFrom.getExercises().stream()
                 .sorted(Comparator.comparing(Exercise::getExerciseNumber))

@@ -1,13 +1,16 @@
 package zti.gymappspringbackend.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import zti.gymappspringbackend.dtos.exerciseSet.CreateOrUpdateExerciseSetDto;
 import zti.gymappspringbackend.entities.Exercise;
 import zti.gymappspringbackend.entities.ExerciseSet;
+import zti.gymappspringbackend.entities.User;
 import zti.gymappspringbackend.exceptions.BadRequestGymAppException;
 import zti.gymappspringbackend.repositories.ExerciseRepository;
 import zti.gymappspringbackend.repositories.ExerciseSetRepository;
+import zti.gymappspringbackend.repositories.UserRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -19,14 +22,19 @@ public class ExerciseSetService {
 
     private final ExerciseSetRepository exerciseSetRepository;
     private final ExerciseRepository exerciseRepository;
+    private final UserRepository userRepository;
 
     public ExerciseSet saveExerciseSet(CreateOrUpdateExerciseSetDto dto) {
         Exercise exercise = exerciseRepository.findById(dto.getExerciseId())
                 .orElseThrow(() -> new BadRequestGymAppException("Exercise not found"));
 
-//        if (!exercise.getWorkout().getUser().getId().equals(currentUserService.getUserId())) {
-//            throw new ExerciseNotFoundException(command.getExerciseId());
-//        }
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestGymAppException());
+
+        if (!exercise.getWorkout().getUser().equals(user)) {
+            throw new BadRequestGymAppException();
+        }
 
         List<ExerciseSet> sets = exercise.getExerciseSets()
                 .stream()

@@ -33,18 +33,18 @@ public class ExerciseTypeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<ExerciseType> create(@RequestBody ExerciseType exerciseType) {
-        ExerciseType savedExerciseType = exerciseTypeRepository.save(exerciseType);
-        return ResponseEntity.created(URI.create("/api/exercise-types/" + savedExerciseType.getId())).body(savedExerciseType);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        if (exerciseTypeRepository.existsById(id)) {
-            exerciseTypeRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
+//    @PostMapping
+//    public ResponseEntity<ExerciseType> create(@RequestBody ExerciseType exerciseType) {
+//        ExerciseType savedExerciseType = exerciseTypeRepository.save(exerciseType);
+//        return ResponseEntity.created(URI.create("/api/exercise-types/" + savedExerciseType.getId())).body(savedExerciseType);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+//        if (exerciseTypeRepository.existsById(id)) {
+//            exerciseTypeRepository.deleteById(id);
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
 }
